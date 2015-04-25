@@ -1,6 +1,6 @@
 {
     "name": "responsible/rsvp",
-    "description": "Handles the output of data for output.",
+    "description": "Handles the data for JSON API output.",
     "keywords": [
         "responsiblewebdesigner",
         "api",
