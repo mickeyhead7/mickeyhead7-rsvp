@@ -40,6 +40,11 @@ class Manager
         return $this;
     }
 
+    public function getResource()
+    {
+        return $this->resource;
+    }
+
     /**
      * Set the inital data from the resource into the ResponseBag object
      *
