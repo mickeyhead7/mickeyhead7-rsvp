@@ -34,16 +34,38 @@ class ManagerTest extends \Codeception\TestCase\Test
      */
     public function testResourceCollection()
     {
-        try {
-            // Dummy collection data fail
-            $data_obj = new DataTest();
-            $data = $data_obj->data;
-            $collection = new \Responsible\Rsvp\Resource\Collection($data, new TransformerTest());
-            $manager = new \Responsible\Rsvp\Manager();
-            $manager->setResource($collection);
-        } catch(Exception $e) {
-            $this->assertTrue($this->manager->getResource());
-        }
+        $data_obj = new DataTest();
+        $data = $data_obj->data;
+        $collection = new \Responsible\Rsvp\Resource\Collection($data, new TransformerTest());
+        $collection->setPaginator(new PaginatorTest());
+        $manager = new \Responsible\Rsvp\Manager();
+        $manager->setResource($collection);
+        $response = $manager->getResponse();
+
+        $this->assertTrue($manager->getResource() instanceof \Responsible\Rsvp\Resource\Collection);
+        $this->assertTrue($manager->getResource()->getTransformer() instanceof \Responsible\Rsvp\Transformer\TransformerAbstract);
+        $this->assertTrue($manager->getResource()->getPaginator() instanceof \Responsible\Rsvp\Pagination\PaginatorInterface);
+        $this->assertTrue($response instanceof \Responsible\Rsvp\ResponseBag);
+        $this->assertTrue(is_array($response->data));
+        $this->assertTrue(is_array($response->links));
+    }
+
+    /**
+     * Test a dummy item resource
+     */
+    public function testResourceItem()
+    {
+        $data_obj = new DataTest();
+        $data = $data_obj->data[0];
+        $item = new \Responsible\Rsvp\Resource\Item($data, new TransformerTest());
+        $manager = new \Responsible\Rsvp\Manager();
+        $manager->setResource($item);
+        $response = $manager->getResponse();
+
+        $this->assertTrue($manager->getResource() instanceof \Responsible\Rsvp\Resource\Item);
+        $this->assertTrue($manager->getResource()->getTransformer() instanceof \Responsible\Rsvp\Transformer\TransformerAbstract);
+        $this->assertTrue($response instanceof \Responsible\Rsvp\ResponseBag);
+        $this->assertTrue(is_array($response->data));
     }
 
 }

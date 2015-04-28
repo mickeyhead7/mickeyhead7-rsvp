@@ -108,11 +108,17 @@ class Manager
             $response->data = $this->sanitizeData($this->response->data);
         }
 
-        if (!$response->links) {
+        // Links
+        if ($links = $this->response->links) {
+            $response->links = $links;
+        } else {
             unset($response->links);
         }
 
-        if (!$response->meta) {
+        // Meta
+        if ($meta = $this->response->meta) {
+            $response->meta = $meta;
+        } else {
             unset($response->meta);
         }
 
