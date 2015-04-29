@@ -58,7 +58,6 @@ class Manager
 
             foreach ($this->resource->getData() as $item) {
                 $new = new Item($item, $this->resource->getTransformer());
-
                 if ($includes = $this->resource->getIncludes()) {
                     $new->setIncludes($includes);
                     $new->parseIncludes();
