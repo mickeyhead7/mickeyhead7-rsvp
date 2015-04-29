@@ -6,9 +6,9 @@ require_once (__DIR__ . '/../vendor/autoload.php');
 /**
  * Dummy test data
  *
- * Class DataTest
+ * Class Data
  */
-class DataTest {
+class Data {
 
     public $data = [
         [
@@ -32,14 +32,23 @@ class DataTest {
 /**
  * Test transformer
  *
- * Class TransformerTest
+ * Class Transformer
  */
-class TransformerTest extends \Responsible\Rsvp\Transformer\TransformerAbstract
+class Transformer extends \Responsible\Rsvp\Transformer\TransformerAbstract
 {
+
+    protected $allowed_includes = ['test'];
 
     public function transform($item)
     {
         return $item;
+    }
+
+    public function includeTest($item)
+    {
+        return [
+            'test' => true,
+        ];
     }
 
 }
@@ -49,7 +58,7 @@ class TransformerTest extends \Responsible\Rsvp\Transformer\TransformerAbstract
  *
  * Class PaginatorTest
  */
-class PaginatorTest implements \Responsible\Rsvp\Pagination\PaginatorInterface
+class Paginator implements \Responsible\Rsvp\Pagination\PaginatorInterface
 {
 
     public function getSelf()

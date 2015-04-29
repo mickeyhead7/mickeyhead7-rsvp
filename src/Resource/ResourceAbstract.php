@@ -3,6 +3,7 @@
 namespace Responsible\Rsvp\Resource;
 
 use \Responsible\Rsvp\Transformer\TransformerAbstract;
+use \Responsible\Rsvp\IncludeParams;
 
 abstract class ResourceAbstract
 {
@@ -13,6 +14,13 @@ abstract class ResourceAbstract
      * @var TransformerAbstract
      */
     private $transformer;
+
+    /**
+     * Includes for parsing
+     *
+     * @var array
+     */
+    private $includes;
 
     /**
      * Resource data
@@ -65,6 +73,29 @@ abstract class ResourceAbstract
     public function getTransformer()
     {
         return $this->transformer;
+    }
+
+    /**
+     * Set the list of includes to be parsed
+     *
+     * @param IncludeParams $includes
+     * @return $this
+     */
+    public function setIncludes(IncludeParams $includes)
+    {
+        $this->includes = $includes;
+
+        return $this;
+    }
+
+    /**
+     * Get the list of includes for parsing
+     *
+     * @return array
+     */
+    public function getIncludes()
+    {
+        return $this->includes;
     }
 
     /**

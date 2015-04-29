@@ -2,11 +2,11 @@
 
 namespace Responsible\Rsvp;
 
-use Api\Controllers\Resource;
-use \Symfony\Component\HttpFoundation\Request;
+use Responsible\Rsvp\Exceptions\ResourceException;
 use \Responsible\Rsvp\Pagination\Pagination;
 use \Responsible\Rsvp\Resource\Collection;
 use \Responsible\Rsvp\Resource\Item;
+use Responsible\Rsvp\Resource\ResourceAbstract;
 
 class Manager
 {
@@ -46,7 +46,7 @@ class Manager
     }
 
     /**
-     * Set the inital data from the resource into the ResponseBag object
+     * Set the initial data from the resource into the ResponseBag object
      *
      * @return $this
      */
@@ -58,7 +58,12 @@ class Manager
 
             foreach ($this->resource->getData() as $item) {
                 $new = new Item($item, $this->resource->getTransformer());
-                $new->setIncluded($this->parseIncludes($new));
+
+                if ($includes = $this->resource->getIncludes()) {
+                    $new->setIncludes($includes);
+                    $new->parseIncludes();
+                }
+
                 $collection[] = $new;
             }
 
@@ -72,7 +77,10 @@ class Manager
 
         // Process an item
         } else if ($this->resource instanceof Item) {
-            $this->resource->setIncluded($this->parseIncludes($this->resource));
+            if ($this->resource->getIncludes()) {
+                $this->resource->parseIncludes();
+            }
+
             $this->response->data = $this->resource;
         }
 
@@ -94,19 +102,13 @@ class Manager
         // Process resource data
         $response = new ResponseBag();
 
-        // Sanitize a collection
-        if ($this->resource instanceof Collection) {
-            $data = [];
-            foreach ($this->response->data as $item) {
-                $data[] = $this->sanitizeData($item);
-            }
-            $response->data = $data;
+        // Cannot continue if a resource has not been set
+        if (!$this->resource instanceof ResourceAbstract) {
+            return $response;
         }
 
-        // Sanitize an Item
-        elseif ($this->resource instanceof Item) {
-            $response->data = $this->sanitizeData($this->response->data);
-        }
+        // Sanitize data
+        $response->data = $this->sanitizeData();
 
         // Links
         if ($links = $this->response->links) {
@@ -131,57 +133,46 @@ class Manager
      * @param Resource\ResourceAbstract $data
      * @return array|mixed
      */
-    public function sanitizeData(\Responsible\Rsvp\Resource\ResourceAbstract $data)
+    public function sanitizeData()
     {
+        $resource = $this->response->data;
         $result = [];
 
         // Sanitize a collection
-        if ($data instanceof Collection)
+        if ($this->resource instanceof Collection)
         {
-            foreach ($data as $item) {
-                $sanitized = $data->getTransformer()->transform($item->getData());
-                $result[] = $sanitized;
+            foreach ($resource as $item) {
+                $result[] = $this->sanitizeItem($item);
             }
 
             // Sanitize an item
-        } elseif ($data instanceof Item) {
-            $sanitized = $data->getTransformer()->transform($data->getData());
-            $included = [];
-
-            foreach($data->getIncluded() as $key => $include) {
-                $included[$key] = $include->getTransformer()->transform($include->getData());
-            }
-
-            $sanitized['included'] = $included;
-            $result = $sanitized;
+        } elseif ($this->resource instanceof Item) {
+            $result = $this->sanitizeItem($resource);
         }
 
         return $result;
     }
 
     /**
-     * Set the includes to be parsed
+     * Sanitize an item
      *
      * @param Item $item
-     * @return array
+     * @return mixed
      */
-    public function parseIncludes(\Responsible\Rsvp\Resource\Item $item)
+    private function sanitizeItem(Item $item)
     {
-        $data = [];
-        $includes = explode(',', Request::createFromGlobals()->query->get('includes'));
+        $sanitized = $item->getTransformer()->transform($item->getData());
+        $included = [];
 
-        foreach ($includes as $include) {
-            $method = 'include' . ucfirst($include);
-            $transformer = $item->getTransformer();
-            $allowed = $transformer->getAllowedIncludes();
-
-            if (in_array($include, $allowed) && method_exists($transformer, $method)) {
-                $result = $transformer->$method($item->getData());
-                $data[$include] = $result;
-            }
+        foreach($item->getIncluded() as $key => $include) {
+            $included[$key] = $include->getTransformer()->transform($include->getData());
         }
 
-        return $data;
+        if ($included) {
+            $sanitized['included'] = $included;
+        }
+
+        return $sanitized;
     }
 
 }
