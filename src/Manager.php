@@ -166,7 +166,7 @@ class Manager
         foreach($item->getIncluded() as $key => $include) {
             if ($include instanceof Collection) {
                 foreach ($include->getData() as $item) {
-                    $included[$key] = $include->getTransformer()->transform($item);
+                    $included[$key][] = $include->getTransformer()->transform($item);
                 }
             } elseif ($include instanceof Item) {
                 $included[$key] = $include->getTransformer()->transform($include->getData());
