@@ -1,20 +1,20 @@
 {
-    "name": "responsible/rsvp",
+    "name": "mickeyhead7/rsvp",
     "description": "Handles the data for JSON API output.",
     "keywords": [
-        "responsiblewebdesigner",
+        "mickeyhead7",
         "api",
         "data",
         "json",
         "rest"
     ],
-    "homepage": "http://responsiblewebdesigner.com/",
+    "homepage": "http://markhead.net",
     "license": "MIT",
     "authors": [
         {
             "name": "Mark Head",
-            "email": "mark@responsiblewebdesigner.com",
-            "homepage": "http://responsiblewebdesigner.com",
+            "email": "me@markhead.net",
+            "homepage": "http://markhead.net",
             "role": "Developer"
         }
     ],
@@ -26,7 +26,7 @@
     },
     "autoload": {
         "psr-4": {
-            "Responsible\\Rsvp\\": "src"
+            "Mickeyhead7\\Rsvp\\": "src"
         }
     }
 }

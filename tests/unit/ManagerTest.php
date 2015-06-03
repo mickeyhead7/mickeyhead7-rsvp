@@ -22,9 +22,9 @@ class ManagerTest extends \Codeception\TestCase\Test
      */
     public function testManager()
     {
-        $manager = new \Responsible\Rsvp\Manager();
+        $manager = new \Mickeyhead7\Rsvp\Manager();
 
-        $this->assertTrue($manager instanceof \Responsible\Rsvp\Manager);
+        $this->assertTrue($manager instanceof \Mickeyhead7\Rsvp\Manager);
     }
 
 }

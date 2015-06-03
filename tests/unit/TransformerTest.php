@@ -24,7 +24,7 @@ class TransformerTest extends \Codeception\TestCase\Test
     {
         $data_obj = new Data();
         $data = $data_obj->data[0];
-        $item = new \Responsible\Rsvp\Resource\Item($data, new Transformer());
+        $item = new \Mickeyhead7\Rsvp\Resource\Item($data, new Transformer());
         $transformed = $item->getTransformer()->transform($item->getData());
 
         $this->assertTrue(is_array($transformed));

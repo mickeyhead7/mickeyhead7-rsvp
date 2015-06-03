@@ -1,9 +1,9 @@
 <?php
 
-namespace Responsible\Rsvp\Transformer;
+namespace Mickeyhead7\Rsvp\Transformer;
 
-use \Responsible\Rsvp\Resource\Collection;
-use \Responsible\Rsvp\Resource\Item;
+use \Mickeyhead7\Rsvp\Resource\Collection;
+use \Mickeyhead7\Rsvp\Resource\Item;
 
 abstract class TransformerAbstract
 {
@@ -25,7 +25,7 @@ abstract class TransformerAbstract
      * @param TransformerAbstract $transformer
      * @return Collection
      */
-    public function collection($data, \Responsible\Rsvp\Transformer\TransformerAbstract $transformer)
+    public function collection($data, \Mickeyhead7\Rsvp\Transformer\TransformerAbstract $transformer)
     {
         return new Collection($data, $transformer);
     }
@@ -37,7 +37,7 @@ abstract class TransformerAbstract
      * @param TransformerAbstract $transformer
      * @return Item
      */
-    public function item($data, \Responsible\Rsvp\Transformer\TransformerAbstract $transformer)
+    public function item($data, \Mickeyhead7\Rsvp\Transformer\TransformerAbstract $transformer)
     {
         return new Item($data, $transformer);
     }

@@ -1,6 +1,6 @@
 <?php
 
-namespace Responsible\Rsvp;
+namespace Mickeyhead7\Rsvp;
 
 class ResponseBag
 {

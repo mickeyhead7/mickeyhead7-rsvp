@@ -1,12 +1,12 @@
 <?php
 
-namespace Responsible\Rsvp;
+namespace Mickeyhead7\Rsvp;
 
-use Responsible\Rsvp\Exceptions\ResourceException;
-use \Responsible\Rsvp\Pagination\Pagination;
-use \Responsible\Rsvp\Resource\Collection;
-use \Responsible\Rsvp\Resource\Item;
-use Responsible\Rsvp\Resource\ResourceAbstract;
+use Mickeyhead7\Rsvp\Exceptions\ResourceException;
+use \Mickeyhead7\Rsvp\Pagination\Pagination;
+use \Mickeyhead7\Rsvp\Resource\Collection;
+use \Mickeyhead7\Rsvp\Resource\Item;
+use Mickeyhead7\Rsvp\Resource\ResourceAbstract;
 
 class Manager
 {
@@ -31,11 +31,11 @@ class Manager
      * @param Resource\ResourceAbstract $resource
      * @return $this
      */
-    public function setResource(\Responsible\Rsvp\Resource\ResourceAbstract $resource)
+    public function setResource(\Mickeyhead7\Rsvp\Resource\ResourceAbstract $resource)
     {
         $this->resource = $resource;
         $this->response = new ResponseBag();
-        $this->setResponse();
+//        $this->setResponse();
 
         return $this;
     }
@@ -46,14 +46,22 @@ class Manager
     }
 
     /**
-     * Set the initial data from the resource into the ResponseBag object
+     * Create and return the resource data
      *
-     * @return $this
+     * @return ResponseBag
      */
-    public function setResponse()
+    public function createResponse()
     {
+        // Process resource data
+        $response = new ResponseBag();
+
+        // Cannot continue if a resource has not been set
+        if (!$this->resource instanceof ResourceAbstract) {
+            return $response;
+        }
+
         // Process a collection
-        if ($this->resource instanceof Collection) {
+        elseif ($this->resource instanceof Collection) {
             $collection = [];
 
             foreach ($this->resource->getData() as $item) {
@@ -66,62 +74,40 @@ class Manager
                 $collection[] = $new;
             }
 
-            $this->response->data = $collection;
+            $data = $collection;
 
             // Paginate data if a paginator is set for a collection
             if ($paginator = $this->resource->getPaginator()) {
                 $pagination = new Pagination($paginator);
-                $this->response->links = $pagination->generateCollectionLinks();
+                $response->links = $pagination->generateCollectionLinks();
             }
+        }
 
         // Process an item
-        } else if ($this->resource instanceof Item) {
+        elseif ($this->resource instanceof Item) {
             if ($this->resource->getIncludes()) {
                 $this->resource->parseIncludes();
             }
 
-            $this->response->data = $this->resource;
-        }
-
-        // Meta
-        if ($meta = $this->resource->getMeta()) {
-            $this->response->meta = $meta;
-        }
-
-        return $this;
-    }
-
-    /**
-     * Parse and return the resource data
-     *
-     * @return ResponseBag
-     */
-    public function getResponse()
-    {
-        // Process resource data
-        $response = new ResponseBag();
-
-        // Cannot continue if a resource has not been set
-        if (!$this->resource instanceof ResourceAbstract) {
-            return $response;
+            $data = $this->resource;
         }
 
         // Sanitize data
-        $response->data = $this->sanitizeData();
+        $response->data = $this->sanitizeData($data);
 
         // Links
-        if ($links = $this->response->links) {
-            $response->links = $links;
-        } else {
+        if (!$links = $response->links) {
             unset($response->links);
         }
 
         // Meta
-        if ($meta = $this->response->meta) {
+        if ($meta = $this->resource->getMeta()) {
             $response->meta = $meta;
         } else {
             unset($response->meta);
         }
+
+        $this->response = $response;
 
         return $response;
     }
@@ -132,21 +118,20 @@ class Manager
      * @param Resource\ResourceAbstract $data
      * @return array|mixed
      */
-    public function sanitizeData()
+    public function sanitizeData($data)
     {
-        $resource = $this->response->data;
         $result = [];
 
         // Sanitize a collection
         if ($this->resource instanceof Collection)
         {
-            foreach ($resource as $item) {
+            foreach ($data as $item) {
                 $result[] = $this->sanitizeItem($item);
             }
 
             // Sanitize an item
         } elseif ($this->resource instanceof Item) {
-            $result = $this->sanitizeItem($resource);
+            $result = $this->sanitizeItem($data);
         }
 
         return $result;

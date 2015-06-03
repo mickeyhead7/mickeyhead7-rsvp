@@ -1,9 +1,9 @@
 <?php
 
-namespace Responsible\Rsvp\Resource;
+namespace Mickeyhead7\Rsvp\Resource;
 
-use \Responsible\Rsvp\Transformer\TransformerAbstract;
-use \Responsible\Rsvp\IncludeParams;
+use \Mickeyhead7\Rsvp\Transformer\TransformerAbstract;
+use \Mickeyhead7\Rsvp\IncludeParams;
 
 abstract class ResourceAbstract
 {

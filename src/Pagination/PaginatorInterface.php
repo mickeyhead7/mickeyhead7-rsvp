@@ -1,6 +1,6 @@
 <?php
 
-namespace Responsible\Rsvp\Pagination;
+namespace Mickeyhead7\Rsvp\Pagination;
 
 interface PaginatorInterface
 {

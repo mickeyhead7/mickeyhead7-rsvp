@@ -34,7 +34,7 @@ class Data {
  *
  * Class Transformer
  */
-class Transformer extends \Responsible\Rsvp\Transformer\TransformerAbstract
+class Transformer extends \Mickeyhead7\Rsvp\Transformer\TransformerAbstract
 {
 
     protected $allowed_includes = ['test'];
@@ -58,7 +58,7 @@ class Transformer extends \Responsible\Rsvp\Transformer\TransformerAbstract
  *
  * Class PaginatorTest
  */
-class Paginator implements \Responsible\Rsvp\Pagination\PaginatorInterface
+class Paginator implements \Mickeyhead7\Rsvp\Pagination\PaginatorInterface
 {
 
     public function getSelf()

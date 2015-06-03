@@ -1,6 +1,6 @@
 <?php
 
-namespace Responsible\Rsvp\Resource;
+namespace Mickeyhead7\Rsvp\Resource;
 
 class Item extends ResourceAbstract
 {

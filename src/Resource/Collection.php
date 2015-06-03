@@ -1,8 +1,8 @@
 <?php
 
-namespace Responsible\Rsvp\Resource;
+namespace Mickeyhead7\Rsvp\Resource;
 
-use \Responsible\Rsvp\Pagination\PaginatorInterface;
+use \Mickeyhead7\Rsvp\Pagination\PaginatorInterface;
 
 class Collection extends ResourceAbstract
 {
