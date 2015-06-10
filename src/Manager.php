@@ -35,7 +35,6 @@ class Manager
     {
         $this->resource = $resource;
         $this->response = new ResponseBag();
-//        $this->setResponse();
 
         return $this;
     }
