@@ -64,14 +64,14 @@ class Item extends ResourceAbstract
             return $includes;
         }
 
-        foreach ($includes->getData() as $key => $params) {
-            $method = 'include' . ucfirst($key);
+        foreach ($includes as $include) {
+            $method = 'include' . ucfirst($include);
             $transformer = $this->getTransformer();
             $allowed = $transformer->getAllowedIncludes();
 
-            if (in_array($key, $allowed) && method_exists($transformer, $method)) {
-                $result = $transformer->$method($this->getData(), $params);
-                $data[$key] = $result;
+            if (in_array($include, $allowed) && method_exists($transformer, $method)) {
+                $result = $transformer->$method($this->getData());
+                $data[$include] = $result;
             }
         }
 

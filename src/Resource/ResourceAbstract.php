@@ -81,7 +81,7 @@ abstract class ResourceAbstract
      * @param IncludeParams $includes
      * @return $this
      */
-    public function setIncludes(IncludeParams $includes)
+    public function setIncludes(Array $includes = [])
     {
         $this->includes = $includes;
 
