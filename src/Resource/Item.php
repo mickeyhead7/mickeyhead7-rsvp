@@ -2,69 +2,25 @@
 
 namespace Mickeyhead7\Rsvp\Resource;
 
-class Item extends ResourceAbstract
+class Item extends ResourceAbstract implements ResourceInterface
 {
 
     /**
-     * Included resources
-     *
-     * @var array
-     */
-    protected $included = [];
-
-    /**
-     * Set the resource included data
-     *
-     * @param array $value
-     * @return $this
-     */
-    public function setIncluded(Array $value)
-    {
-        $this->included = $value;
-
-        return $this;
-    }
-
-    /**
-     * Set a specified resource included data by key
-     *
-     * @param $key
-     * @param $value
-     * @return $this
-     */
-    public function setIncludedValue($key, $value)
-    {
-        $this->included[$key] = $value;
-
-        return $this;
-    }
-
-    /**
-     * Get the resource included data
-     *
-     * @return array
-     */
-    public function getIncluded()
-    {
-        return $this->included;
-    }
-
-    /**
-     * Set the includes to be parsed
+     * Get the includes to be parsed
      *
      * @param Item $item
      * @return array
      */
-    public function parseIncludes()
+    public function getIncluded()
     {
         $data = [];
-        $includes = $this->getIncludes();
+        $include_params = $this->getIncludeParams();
 
-        if (!$includes) {
-            return $includes;
+        if (!$include_params) {
+            return $include_params;
         }
 
-        foreach ($includes->getData() as $key => $params) {
+        foreach ($include_params->getData() as $key => $params) {
             $method = 'include' . ucfirst($key);
             $transformer = $this->getTransformer();
             $allowed = $transformer->getAllowedIncludes();
@@ -75,11 +31,23 @@ class Item extends ResourceAbstract
             }
         }
 
-        if ($data) {
-            $this->setIncluded($data);
-        }
+        return $data;
+    }
 
-        return $this;
+    public function getLinks()
+    {
+        return $this->getTransformer()->getLinks($this->getData());
+    }
+
+    /**
+     * Sanitize an item
+     *
+     * @param Item $item
+     * @return mixed
+     */
+    public function sanitize()
+    {
+        return $this->getTransformer()->transform($this->getData());
     }
 
 }

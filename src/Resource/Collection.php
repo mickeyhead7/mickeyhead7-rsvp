@@ -4,7 +4,7 @@ namespace Mickeyhead7\Rsvp\Resource;
 
 use \Mickeyhead7\Rsvp\Pagination\PaginatorInterface;
 
-class Collection extends ResourceAbstract
+class Collection extends ResourceAbstract implements ResourceInterface
 {
 
     /**

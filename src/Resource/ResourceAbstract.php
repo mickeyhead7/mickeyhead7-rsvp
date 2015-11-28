@@ -16,11 +16,11 @@ abstract class ResourceAbstract
     private $transformer;
 
     /**
-     * Includes for parsing
+     * Include params for parsing
      *
      * @var array
      */
-    private $includes;
+    private $include_params;
 
     /**
      * Resource data
@@ -76,14 +76,14 @@ abstract class ResourceAbstract
     }
 
     /**
-     * Set the list of includes to be parsed
+     * Set the list of include params to be parsed
      *
      * @param IncludeParams $includes
      * @return $this
      */
-    public function setIncludes(IncludeParams $includes)
+    public function setIncludeParams(IncludeParams $include_params)
     {
-        $this->includes = $includes;
+        $this->include_params = $include_params;
 
         return $this;
     }
@@ -93,9 +93,9 @@ abstract class ResourceAbstract
      *
      * @return array
      */
-    public function getIncludes()
+    public function getIncludeParams()
     {
-        return $this->includes;
+        return $this->include_params;
     }
 
     /**

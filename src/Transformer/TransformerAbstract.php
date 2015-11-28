@@ -19,6 +19,16 @@ abstract class TransformerAbstract
     abstract public function transform($data);
 
     /**
+     * Get the API links for a resource
+     *
+     * @return null
+     */
+    public function getLinks($data)
+    {
+        return null;
+    }
+
+    /**
      * Creates a new resource collection
      *
      * @param $data
