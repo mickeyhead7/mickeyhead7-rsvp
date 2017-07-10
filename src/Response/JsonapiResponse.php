@@ -169,7 +169,7 @@ class JsonapiResponse extends ResponseAbstract
             return $item->getIncluded();
         }
 
-        return null;
+        return [];
     }
 
     /**
