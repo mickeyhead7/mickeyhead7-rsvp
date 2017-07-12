@@ -6,9 +6,8 @@ use Mickeyhead7\Rsvp\Resource\Item;
 use Mickeyhead7\Rsvp\Resource\Collection;
 use Mickeyhead7\Rsvp\Pagination\Pagination;
 
-class JsonapiResponse extends ResponseAbstract
+class JsonApiResponse extends ResponseAbstract
 {
-
     /**
      * @var Resource data
      */
@@ -25,9 +24,9 @@ class JsonapiResponse extends ResponseAbstract
     public $meta;
 
     /**
-     * @var Included data
+     * @var Relationships data
      */
-    public $included = [];
+    public $relationships = [];
 
     /**
      * Create the response
@@ -37,9 +36,27 @@ class JsonapiResponse extends ResponseAbstract
     public function create()
     {
         return $this
-            ->setData()
             ->setLinks()
+            ->setData()
             ->setMeta();
+    }
+
+    /**
+     * Set the response links data
+     *
+     * @return $this Instance of self
+     */
+    public function setLinks()
+    {
+        // Only required for collections as items contain links by default
+        if ($this->resource instanceof Collection && $paginator = $this->resource->getPaginator()) {
+            $pagination = new Pagination($paginator);
+            $this->links = $pagination->generateCollectionLinks();
+        } else {
+            unset($this->links);
+        }
+
+        return $this;
     }
 
     /**
@@ -78,37 +95,36 @@ class JsonapiResponse extends ResponseAbstract
         $tmp = $this->getFormattedItem($item);
 
         // Get related data
-        $relationships = $this->getIncluded($item);
-        $included = [];
+        $relationships = $this->getRelationships($item);
 
         // Closure function to internally parse related includes
-        $parseIncluded = function($key, Item $item, array $included = []) {
+        $parseRelationships = function($key, Item $item, array $relationships = []) {
             $related = $this->getFormattedItem($item);
 
-            if (!in_array($related, $this->included)) {
-                $this->included[] = $related;
+            if (!in_array($related, $this->relationships)) {
+                $this->relationships[] = $related;
             }
 
             unset($related['attributes']);
             unset($related['links']);
-            $included[$key]['data'][] = $related;
+            $relationships[$key]['data'][] = $related;
 
-            return $included;
+            return $relationships;
         };
 
         // Loop data to create includes response data
         foreach ($relationships as $key => $value) {
             if ($value instanceof Collection) {
                 foreach ($value->getData() as $include_value) {
-                    $included = $parseIncluded($key, new Item($include_value, $value->getTransformer()), $included);
+                    $relationships = $parseRelationships($key, new Item($include_value, $value->getTransformer()), $relationships);
                 }
             } else if ($value instanceof Item) {
-                $included = $parseIncluded($key, $value, $included);
+                $relationships = $parseRelationships($key, $value, $relationships);
             }
         }
 
-        // Pass the included data into the item
-        $tmp['relationships'] = $included;
+        // Pass the relationships data into the item
+        $tmp['relationships'] = $relationships;
 
         // Set the response data
         if (is_array($this->data)) {
@@ -159,9 +175,9 @@ class JsonapiResponse extends ResponseAbstract
      * Gets the related data for a resource item
      *
      * @param Item $item Resource item
-     * @return array|null Included data
+     * @return array|null Relationships data
      */
-    private function getIncluded(Item $item)
+    private function getRelationships(Item $item)
     {
         if ($include_params = $this->resource->getIncludeParams()) {
             $item->setIncludeParams($include_params);
@@ -170,24 +186,6 @@ class JsonapiResponse extends ResponseAbstract
         }
 
         return [];
-    }
-
-    /**
-     * Set the response links data
-     *
-     * @return $this Instance of self
-     */
-    public function setLinks()
-    {
-        // Only required for collections as items contain links by default
-        if ($this->resource instanceof Collection && $paginator = $this->resource->getPaginator()) {
-            $pagination = new Pagination($paginator);
-            $this->links = $pagination->generateCollectionLinks();
-        } else {
-            unset($this->links);
-        }
-
-        return $this;
     }
 
     /**

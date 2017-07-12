@@ -2,13 +2,10 @@
 
 namespace Mickeyhead7\Rsvp\Response;
 
-use \Mickeyhead7\Rsvp\Resource\ResourceInterface;
-use \Mickeyhead7\Rsvp\Resource\Collection;
-use \Mickeyhead7\Rsvp\Resource\Item;
+use Mickeyhead7\Rsvp\Resource\ResourceInterface;
 
 abstract class ResponseAbstract
 {
-
     /**
      * Resource object
      *

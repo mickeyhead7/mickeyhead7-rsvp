@@ -2,13 +2,12 @@
 
 namespace Mickeyhead7\Rsvp;
 
-use Mickeyhead7\Rsvp\Response\JsonapiResponse;
+use Mickeyhead7\Rsvp\Response\JsonApiResponse;
 use Mickeyhead7\Rsvp\Response\ResponseAbstract;
 use Mickeyhead7\Rsvp\Resource\ResourceInterface;
 
 class Manager
 {
-
     /**
      * Response object
      *
@@ -28,7 +27,7 @@ class Manager
         if ($response) {
             $this->response = $response;
         } else {
-            $this->response = new JsonapiResponse();
+            $this->response = new JsonApiResponse();
         }
     }
 
@@ -36,6 +35,7 @@ class Manager
      * Set the resource data
      *
      * @param Resource\ResourceAbstract $resource
+     *
      * @return $this
      */
     public function setResource(ResourceInterface $resource)
