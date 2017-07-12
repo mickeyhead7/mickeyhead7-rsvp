@@ -2,9 +2,9 @@
 
 namespace Mickeyhead7\Rsvp\Response;
 
-use \Mickeyhead7\Rsvp\Resource\Collection;
-use \Mickeyhead7\Rsvp\Resource\Item;
-use \Mickeyhead7\Rsvp\Pagination\Pagination;
+use Mickeyhead7\Rsvp\Resource\Item;
+use Mickeyhead7\Rsvp\Resource\Collection;
+use Mickeyhead7\Rsvp\Pagination\Pagination;
 
 class JsonapiResponse extends ResponseAbstract
 {
@@ -91,7 +91,7 @@ class JsonapiResponse extends ResponseAbstract
 
             unset($related['attributes']);
             unset($related['links']);
-            $included[$key][] = $related;
+            $included[$key]['data'][] = $related;
 
             return $included;
         };

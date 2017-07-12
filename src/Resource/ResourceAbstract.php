@@ -2,8 +2,8 @@
 
 namespace Mickeyhead7\Rsvp\Resource;
 
-use \Mickeyhead7\Rsvp\Transformer\TransformerAbstract;
-use \Mickeyhead7\Rsvp\IncludeParams;
+use Mickeyhead7\Rsvp\IncludeParams;
+use Mickeyhead7\Rsvp\Transformer\TransformerAbstract;
 
 abstract class ResourceAbstract
 {

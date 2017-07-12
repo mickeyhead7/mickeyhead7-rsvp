@@ -2,12 +2,9 @@
 
 namespace Mickeyhead7\Rsvp;
 
-use \Mickeyhead7\Rsvp\Pagination\Pagination;
-use \Mickeyhead7\Rsvp\Resource\Collection;
-use \Mickeyhead7\Rsvp\Resource\Item;
-use \Mickeyhead7\Rsvp\Resource\ResourceInterface;
-use \Mickeyhead7\Rsvp\Response\ResponseAbstract;
-use \Mickeyhead7\Rsvp\Response\JsonapiResponse;
+use Mickeyhead7\Rsvp\Response\JsonapiResponse;
+use Mickeyhead7\Rsvp\Response\ResponseAbstract;
+use Mickeyhead7\Rsvp\Resource\ResourceInterface;
 
 class Manager
 {

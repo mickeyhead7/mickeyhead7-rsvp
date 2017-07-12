@@ -2,8 +2,8 @@
 
 namespace Mickeyhead7\Rsvp\Transformer;
 
-use \Mickeyhead7\Rsvp\Resource\Collection;
-use \Mickeyhead7\Rsvp\Resource\Item;
+use Mickeyhead7\Rsvp\Resource\Item;
+use Mickeyhead7\Rsvp\Resource\Collection;
 
 abstract class TransformerAbstract
 {
